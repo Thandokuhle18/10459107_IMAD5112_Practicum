@@ -1,0 +1,62 @@
+Start 
+// Main Activity
+Function mainActivity() {
+    // Get the weather data from the API
+    weatherData = getWeatherDataFromAPI()
+
+    // Create an intent to start the Details Activity
+    intent = new Intent(this, DetailsActivity)
+
+    // Put the weather data into the intent
+    intent.putExtra("temperatures", weatherData.temperatures)
+    intent.putExtra("maxTemperatures", weatherData.maxTemperatures)
+    intent.putExtra("minTemperatures", weatherData.minTemperatures)
+    intent.putExtra("weatherConditions", weatherData.weatherConditions)
+
+    // Start the Details Activity
+    startActivity(intent)
+}
+
+// Details Activity
+Function detailsActivity() {
+    // Get the intent that started this activity
+    intent = getIntent()
+
+    // Get the weather data from the intent
+    temperatures = intent.getDoubleArrayExtra("temperatures")
+    maxTemperatures = intent.getDoubleArrayExtra("maxTemperatures")
+    minTemperatures = intent.getDoubleArrayExtra("minTemperatures")
+    weatherConditions = intent.getStringArrayExtra("weatherConditions")
+
+    // Create a list of strings to display in the list view
+    listItems = new ArrayList<String>()
+
+    // Loop through the days of the week
+    for i in range(7) {
+        // Create a string to display the weather data for this day
+        dayString = "Day: " + getDayOfWeek(i) + "\n"
+        dayString += "Temperature: " + temperatures[i] + "°C\n"
+        dayString += "Max Temperature: " + maxTemperatures[i] + "°C\n"
+        dayString += "Min Temperature: " + minTemperatures[i] + "°C\n"
+        dayString += "Weather Condition: " + weatherConditions[i]
+
+        // Add the string to the list
+        listItems.add(dayString)
+    }
+
+    // Create an adapter to display the list in the list view
+    adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems)
+
+    // Get the list view
+    listView = findViewById(R.id.listView)
+
+    // Set the adapter for the list view
+    listView.adapter = adapter
+}
+
+// Function to get the day of the week from an index
+Function getDayOfWeek(index) {
+    daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    return daysOfWeek[index]
+}
+END
